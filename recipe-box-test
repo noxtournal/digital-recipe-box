@@ -1,0 +1,21 @@
+// Import JUnit testing
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
+// Testing class
+
+public class recipeBoxTest {
+
+  @Test
+  public void test1 {
+  
+  
+  }
+  
+  @Test
+  public void test2 {
+  
+
+  }
+
+}
