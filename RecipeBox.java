@@ -32,7 +32,6 @@ public class RecipeBox {
   public void searchIngredients(String ingredient) {
     List<Recipe> piesWithIng = new ArrayList<>();
     for (Recipe r : recipes) {
-
       if (r.getIngredients().contains(ingredient)) {
         piesWithIng.add(r);
       }
@@ -71,31 +70,36 @@ public class RecipeBox {
   }
 
   public void searchTimeSlot(String length){
-    List<Recipe> short = new ArrayList();
-    List<Recipe> med = new ArrayList();
-    List<Recipe> long = new ArrayList();
+    List<Recipe> shortPie = new ArrayList<>();
+    List<Recipe> medPie = new ArrayList<>();
+    List<Recipe> longPie = new ArrayList<>();
 
     for(Recipe r: recipes){
 
         if (r.getCookTime() <= 30.0){
-            short.add(r);
-        } else if (r.getCookTime > 30 && r.getcookTime() < 60.0){
-            med.add(r);
+            shortPie.add(r);
+        } else if (r.getCookTime() > 30 && r.getCookTime() < 60.0){
+            medPie.add(r);
         } else {
-            long.add(r);
+            longPie.add(r);
         }
     }
 
     if (length.equalsIgnoreCase("short")){
-        System.out.println("Full list of recipes cooked by " + method + ":");
-        System.out.println(piesWithCkMethod);
-
+        System.out.println("Full list of recipes within short time:");
+        System.out.println(shortPie);
+    } else if (length.equalsIgnoreCase("medium")){
+        System.out.println("Full list of recipes within medium time:");
+        System.out.println(medPie);
+    } else if (length.equalsIgnoreCase("long")){
+        System.out.println("Full list of recipes within long time:");
+        System.out.println(longPie);
     }
 
 
   }
 
-  //left to implement: cook with me method , search by cook time method 
+  //left to implement: cook with me method
   //idk how to add new files so for rn i just threw everything in here im sorry :sob: 
   //im so discord
 }
