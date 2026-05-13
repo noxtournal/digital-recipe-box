@@ -11,24 +11,56 @@ public class RecipeBox {
     this.favorites = new ArrayList<>();
   }
 
+  // Add a recipe to the recipe box
   public void addRecipe(Recipe recipe) {
     recipes.add(recipe);  
   }
 
-  public void removeRecipe(Recipe recipe) {
-    recipes.remove(recipe);
+  // Check whether a recipe already exists by name, using normalized lower-case comparison
+  public boolean recipeExists(String recipeName) {
+    if (recipeName == null) {
+      return false;
+    }
+
+    String normalizedName = recipeName.trim().toLowerCase();
+    for (Recipe r : recipes) {
+      if (r.getRecipeName().trim().toLowerCase().equals(normalizedName)) {
+        return true;
+      }
+    }
+    return false;
   }
 
- public void favoriteRecipe(Recipe recipe) {
+  // Remove a recipe from the recipe box
+  public void removeRecipe(String recipe) {
+    for (Recipe r : recipes) {
+      if (r.getRecipeName().equalsIgnoreCase(recipe)) {
+        recipes.remove(r);
+        System.out.println(recipe + " was successfully removed from your recipe box!");
+        return;
+      }
+    }
+    System.out.println(recipe + " was not found in your recipe box.");
+  }
+
+  // Favorite a recipe and add it to the favorites list
+  public void favoriteRecipe(Recipe recipe) {
     if (!favorites.contains(recipe)) {
       System.out.println(recipe.getRecipeName() + " was successfully added to favorites!");
       favorites.add(recipe);
     } else {
       System.out.println("Recipe was already favorited!");
     }
-}
-//implement display favorites method 
+  }
 
+  // Get favorite recipes
+  public void getFavorites(){
+    for (Recipe r: favorites){
+      System.out.println("   ✶ " + r);
+    }
+  }
+
+  // Search for recipes by ingredient
   public void searchIngredients(String ingredient) {
     List<Recipe> piesWithIng = new ArrayList<>();
     for (Recipe r : recipes) {
@@ -37,38 +69,43 @@ public class RecipeBox {
       }
     }
     System.out.println("Full list of recipes with " + ingredient + ":");
-    System.out.println(piesWithIng); 
-    //CONSIDER CHANGING OUTPUT TO FOR LOOP SO EACH RECIPIE IS PRINTED CUTE AND INDIVIDUALLY?!??!?!??!?!?!?
+    for ( Recipe r : piesWithIng){
+      System.out.println("  »" + r.getRecipeName());
+    }
 }
 
+  // Search by category
   public void searchCategory(String category) {
     List<Recipe> piesInCategory = new ArrayList<>();
 
     for (Recipe r : recipes){
-      if( r.getCategory().equals(category)){
+      if( r.getCategory().equalsIgnoreCase(category)){
         piesInCategory.add(r);
       }
     }
     System.out.println("Full list of recipes in the " + category + " category :");
-    System.out.println(piesInCategory); 
-    //CONSIDER CHANGING OUTPUT TO FOR LOOP SO EACH RECIPIE IS PRINTED CUTE AND INDIVIDUALLY?!??!?!??!?!?!?
+    for ( Recipe r : piesInCategory){
+      System.out.println("  »" + r.getRecipeName());
+    }
   }
 
+  // Search by cook method
   public void searchCookMethod(String method) {
     List<Recipe> piesWithCkMethod = new ArrayList<>();
 
     for( Recipe r : recipes){
-      if ( r.getCookMethod().equals(method)){
+      if ( r.getCookMethod().equalsIgnoreCase(method)){
         piesWithCkMethod.add(r);
       }
     }
 
     System.out.println("Full list of recipes cooked by " + method + ":");
-    System.out.println(piesWithCkMethod); 
-    //CONSIDER CHANGING OUTPUT TO FOR LOOP SO EACH RECIPIE IS PRINTED CUTE AND INDIVIDUALLY?!??!?!??!?!?!?
-
+    for ( Recipe r : piesWithCkMethod){
+      System.out.println("  »" + r.getRecipeName());
+    }
   }
-
+  
+  //Search by cook time
   public void searchTimeSlot(String length){
     List<Recipe> shortPie = new ArrayList<>();
     List<Recipe> medPie = new ArrayList<>();
@@ -87,19 +124,36 @@ public class RecipeBox {
 
     if (length.equalsIgnoreCase("short")){
         System.out.println("Full list of recipes within short time:");
-        System.out.println(shortPie);
+        for ( Recipe r : shortPie){
+          System.out.println("  »" + r.getRecipeName());
+        }
     } else if (length.equalsIgnoreCase("medium")){
         System.out.println("Full list of recipes within medium time:");
-        System.out.println(medPie);
+        for ( Recipe r : medPie){
+          System.out.println("  »" + r.getRecipeName());
+        }
     } else if (length.equalsIgnoreCase("long")){
         System.out.println("Full list of recipes within long time:");
-        System.out.println(longPie);
+        for ( Recipe r : longPie){
+          System.out.println("  »" + r.getRecipeName());
+        }
     }
-
-
   }
 
-  //left to implement: cook with me method
-  //idk how to add new files so for rn i just threw everything in here im sorry :sob: 
-  //im so discord
+//display shorthand of all recipes
+  public void shortList() {
+    System.out.println("\n--- BROWSE RECIPES ---\n");
+    
+    for (int i = 0; i < recipes.size(); i++) {
+        Recipe r = recipes.get(i);
+        // Using the "Clean Minimal" style you liked
+        System.out.println("   (" + (i + 1) + ") " + r.getRecipeName());
+        System.out.println("       " + r.getCategory() + " | " + r.getCookTime() + " mins\n");
+    }
+    
+    System.out.println("----------------------");
+  }
+
 }
+
+  //left to implement: cook with me method
