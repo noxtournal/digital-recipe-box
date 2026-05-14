@@ -16,6 +16,24 @@ public class RecipeBox {
     recipes.add(recipe);  
   }
 
+  // View a full recipe
+  public void viewRecipe(String recipeName) {
+    for (Recipe r : recipes) {
+        if (r.getRecipeName().equalsIgnoreCase(recipeName)) {
+            System.out.println("Name: " + r.getRecipeName());
+            System.out.println("Category: " + r.getCategory());
+            System.out.println("Cook Method: " + r.getCookMethod());
+            System.out.println("Cook Time: " + r.getCookTime() + " mins");
+            System.out.println("\nIngredients:");
+            for (String ingredient : r.getIngredients()) {
+              System.out.println("  » " + ingredient);
+            }
+            return;
+        }
+    }
+    System.out.println("Recipe not found!");
+}    
+
   // Check whether a recipe already exists by name, using normalized lower-case comparison
   public boolean recipeExists(String recipeName) {
     if (recipeName == null) {
@@ -43,34 +61,44 @@ public class RecipeBox {
     System.out.println(recipe + " was not found in your recipe box.");
   }
 
-  // Favorite a recipe and add it to the favorites list
-  public void favoriteRecipe(Recipe recipe) {
-    if (!favorites.contains(recipe)) {
-      System.out.println(recipe.getRecipeName() + " was successfully added to favorites!");
-      favorites.add(recipe);
-    } else {
-      System.out.println("Recipe was already favorited!");
+// Favorite a recipe and add it to the favorites list
+public void favoriteRecipe(String recipeName) {
+    for (Recipe r : recipes) {
+      if (r.getRecipeName().equalsIgnoreCase(recipeName)) {
+        if (!favorites.contains(r)) {
+          favorites.add(r);
+          System.out.println(r.getRecipeName() + " was successfully added to favorites!");
+        } else {
+          System.out.println("Recipe was already favorited!");
+        }
+        return;
+      }
     }
-  }
+    System.out.println("Recipe not found!");
+}
 
   // Get favorite recipes
   public void getFavorites(){
     for (Recipe r: favorites){
-      System.out.println("   ✶ " + r);
+      System.out.println("   *   " + r.getRecipeName());
     }
   }
 
   // Search for recipes by ingredient
   public void searchIngredients(String ingredient) {
     List<Recipe> piesWithIng = new ArrayList<>();
-    for (Recipe r : recipes) {
-      if (r.getIngredients().contains(ingredient)) {
-        piesWithIng.add(r);
-      }
+        for (Recipe r : recipes) {
+          for (String ing : r.getIngredients()) {
+            if (ing.toLowerCase().equals(ingredient.toLowerCase())) {
+                piesWithIng.add(r);
+                break;
+            }
+        }
     }
+
     System.out.println("Full list of recipes with " + ingredient + ":");
     for ( Recipe r : piesWithIng){
-      System.out.println("  »" + r.getRecipeName());
+      System.out.println("  »  " + r.getRecipeName());
     }
 }
 
@@ -85,7 +113,7 @@ public class RecipeBox {
     }
     System.out.println("Full list of recipes in the " + category + " category :");
     for ( Recipe r : piesInCategory){
-      System.out.println("  »" + r.getRecipeName());
+      System.out.println("  »  " + r.getRecipeName());
     }
   }
 
@@ -101,7 +129,7 @@ public class RecipeBox {
 
     System.out.println("Full list of recipes cooked by " + method + ":");
     for ( Recipe r : piesWithCkMethod){
-      System.out.println("  »" + r.getRecipeName());
+      System.out.println("  »  " + r.getRecipeName());
     }
   }
   
@@ -125,17 +153,17 @@ public class RecipeBox {
     if (length.equalsIgnoreCase("short")){
         System.out.println("Full list of recipes within short time:");
         for ( Recipe r : shortPie){
-          System.out.println("  »" + r.getRecipeName());
+          System.out.println("  »  " + r.getRecipeName());
         }
     } else if (length.equalsIgnoreCase("medium")){
         System.out.println("Full list of recipes within medium time:");
         for ( Recipe r : medPie){
-          System.out.println("  »" + r.getRecipeName());
+          System.out.println("  »  " + r.getRecipeName());
         }
     } else if (length.equalsIgnoreCase("long")){
         System.out.println("Full list of recipes within long time:");
         for ( Recipe r : longPie){
-          System.out.println("  »" + r.getRecipeName());
+          System.out.println("  »  " + r.getRecipeName());
         }
     }
   }
@@ -154,6 +182,44 @@ public class RecipeBox {
     System.out.println("----------------------");
   }
 
+  public void cookWithMe(Recipe r, Scanner scanner) {
+    if (r == null) {
+        System.out.println("Recipe not found!");
+        return;
+    }
+    List<String> steps = r.getInstructions();
+    int i = 0;
+    while (true) {
+        System.out.println("\nStep " + (i + 1) + ": " + steps.get(i));
+        System.out.println("1. Next");
+        System.out.println("2. Back");
+        System.out.println("3. Exit");
+        int choice = scanner.nextInt();
+        scanner.nextLine();
+        if (choice == 1) {
+            if (i < steps.size() - 1) i++;
+            else System.out.println("Last step already.");
+        }
+        else if (choice == 2) {
+            if (i > 0) i--;
+            else System.out.println("First step already.");
+        }
+        else if (choice == 3) {
+            break;
+        }
+        else {
+            System.out.println("Invalid choice.");
+        }
+    }
+}
+  //method to get recipe object 
+  public Recipe getRecipe(String name) {
+      for (Recipe r : recipes) {
+          if (r.getRecipeName().equalsIgnoreCase(name)) {
+              return r;
+          }
+      }
+      return null;
+  }
 }
 
-  //left to implement: cook with me method
